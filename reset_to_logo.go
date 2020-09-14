@@ -5,7 +5,7 @@ import (
 )
 
 // ResetToLogo resets the keys to the detault logo.
-func (sd *V2) ResetToLogo() error {
+func (sd *StreamDeck) ResetToLogo() error {
 	payload := make([]byte, 32)
 	payload[0] = 0x03
 	payload[1] = 0x02

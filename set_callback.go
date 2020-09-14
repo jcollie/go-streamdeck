@@ -1,7 +1,7 @@
 package streamdeck
 
 // SetCallback .
-func (sd *V2) SetCallback(x int, y int, callback ButtonCallback) error {
+func (sd *StreamDeck) SetCallback(x int, y int, callback ButtonCallback) error {
 	buttonIndex, err := convertXYToButtonIndex(sd, x, y)
 	if err != nil {
 		return err

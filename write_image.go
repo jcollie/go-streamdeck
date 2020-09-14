@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (sd *V2) writeImage(x int, y int, img image.Image) error {
+func (sd *StreamDeck) writeImage(x int, y int, img image.Image) error {
 
 	buttonIndex, err := convertXYToButtonIndex(sd, x, y)
 	if err != nil {
@@ -28,7 +28,7 @@ func (sd *V2) writeImage(x int, y int, img image.Image) error {
 	return nil
 }
 
-func (sd *V2) writeImageData(buttonIndex int, data []byte) error {
+func (sd *StreamDeck) writeImageData(buttonIndex int, data []byte) error {
 	var pageNumber int = 0
 
 	sd.Lock()

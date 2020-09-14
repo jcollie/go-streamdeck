@@ -13,7 +13,7 @@ func itob(i byte) ButtonState {
 	return ButtonPressed
 }
 
-func (sd *V2) Read() {
+func (sd *StreamDeck) Read() {
 	for {
 		data := make([]byte, 4+sd.NumberOfButtons())
 		_, err := sd.device.Read(data)

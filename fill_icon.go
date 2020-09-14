@@ -19,7 +19,7 @@ type IconButton struct {
 }
 
 // FillIcon fills the button with an icon drawn from the Material Design Icons found at https://materialdesignicons.com/.
-func (sd *V2) FillIcon(x int, y int, icon IconButton) error {
+func (sd *StreamDeck) FillIcon(x int, y int, icon IconButton) error {
 
 	img, err := getIcon(sd, icon.Icon, icon.IconColor, icon.BackgroundColor)
 	if err != nil {
@@ -40,7 +40,7 @@ type IconTextButton struct {
 	BackgroundColor color.Color
 }
 
-func fillIconText(sd Device, x int, y int, icon IconTextButton) error {
+func fillIconText(sd *StreamDeck, x int, y int, icon IconTextButton) error {
 	svg, err := getSvgIcon(icon.Icon)
 	if err != nil {
 		return errors.Wrapf(err, "unable to get icon '%s'", icon)
@@ -101,7 +101,7 @@ func fillIconText(sd Device, x int, y int, icon IconTextButton) error {
 }
 
 // FillIconText fills the button with an icon drawn from the Material Design Icons found at https://materialdesignicons.com/.
-func (sd *V2) FillIconText(x int, y int, icon IconTextButton) error {
+func (sd *StreamDeck) FillIconText(x int, y int, icon IconTextButton) error {
 	return fillIconText(sd, x, y, icon)
 }
 

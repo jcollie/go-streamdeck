@@ -9,7 +9,7 @@ import (
 	"golang.org/x/image/bmp"
 )
 
-func encodeImage(sd Device, img image.Image) ([]byte, error) {
+func (sd *StreamDeck) encodeImage(img image.Image) ([]byte, error) {
 	rect := img.Bounds()
 
 	if rect.Dy() != sd.ImageHeight() {
@@ -36,8 +36,4 @@ func encodeImage(sd Device, img image.Image) ([]byte, error) {
 	}
 
 	return buf.Bytes(), nil
-}
-
-func (sd *V2) encodeImage(img image.Image) ([]byte, error) {
-	return encodeImage(sd, img)
 }

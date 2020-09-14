@@ -5,7 +5,7 @@ import (
 )
 
 // GetSerialNumber .
-func (sd *V2) GetSerialNumber() (string, error) {
+func (sd *StreamDeck) GetSerialNumber() (string, error) {
 	data := make([]byte, 32)
 	data[0] = 0x06
 	_, err := sd.device.GetFeatureReport(data)

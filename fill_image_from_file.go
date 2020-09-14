@@ -13,7 +13,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-func fillImageFromFile(sd Device, x int, y int, path string) error {
+// FillImageFromFile fills the button with an image from a file.
+func (sd *StreamDeck) FillImageFromFile(x int, y int, path string) error {
 	if err := checkValidButtonXY(sd, x, y); err != nil {
 		return errors.Wrap(err, "unable to fill image")
 	}
@@ -29,9 +30,4 @@ func fillImageFromFile(sd Device, x int, y int, path string) error {
 	}
 
 	return sd.FillImage(x, y, img)
-}
-
-// FillImageFromFile fills the button with an image from a file.
-func (sd *V2) FillImageFromFile(x int, y int, path string) error {
-	return fillImageFromFile(sd, x, y, path)
 }

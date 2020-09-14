@@ -15,7 +15,7 @@ const (
 )
 
 // GetButtonState .
-func (sd *V2) GetButtonState(x int, y int) (ButtonState, error) {
+func (sd *StreamDeck) GetButtonState(x int, y int) (ButtonState, error) {
 	buttonIndex, err := convertXYToButtonIndex(sd, x, y)
 	if err != nil {
 		return ButtonInvalid, errors.Wrap(err, "unable to get button state")

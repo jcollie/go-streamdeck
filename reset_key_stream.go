@@ -3,7 +3,7 @@ package streamdeck
 import "github.com/pkg/errors"
 
 // ResetKeyStream .
-func (sd *V2) ResetKeyStream() error {
+func (sd *StreamDeck) ResetKeyStream() error {
 	payload := make([]byte, sd.ImageReportPayloadLength())
 	payload[0] = 0x02
 	_, err := sd.device.Write(payload)

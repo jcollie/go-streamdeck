@@ -6,7 +6,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func fillImage(sd Device, x int, y int, img image.Image) error {
+// FillImage fills the given button with an image. For best performance, provide
+// the image in the native size. Otherwise it will be automatically
+// resized.
+func (sd *StreamDeck) FillImage(x int, y int, img image.Image) error {
 	if err := checkValidButtonXY(sd, x, y); err != nil {
 		return err
 	}
@@ -18,11 +21,4 @@ func fillImage(sd Device, x int, y int, img image.Image) error {
 	}
 
 	return nil
-}
-
-// FillImage fills the given button with an image. For best performance, provide
-// the image in the native size. Otherwise it will be automatically
-// resized.
-func (sd *V2) FillImage(x int, y int, img image.Image) error {
-	return fillImage(sd, x, y, img)
 }

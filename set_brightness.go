@@ -3,7 +3,7 @@ package streamdeck
 import "github.com/pkg/errors"
 
 //SetBrightness sets the background brightness
-func (sd *V2) SetBrightness(percent int) error {
+func (sd *StreamDeck) SetBrightness(percent int) error {
 	payload := make([]byte, 32)
 	payload[0] = 0x03
 	payload[1] = 0x08

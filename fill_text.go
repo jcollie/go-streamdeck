@@ -45,7 +45,8 @@ func fillLines(img *image.RGBA, lines []TextLine) error {
 	return nil
 }
 
-func fillText(sd Device, x int, y int, text TextButton) error {
+// FillText .
+func (sd *StreamDeck) FillText(x int, y int, text TextButton) error {
 	img := image.NewRGBA(image.Rect(0, 0, sd.ImageWidth(), sd.ImageHeight()))
 	bg := image.NewUniform(text.BgColor)
 	draw.Draw(img, img.Bounds(), bg, image.Point{0, 0}, draw.Src)
@@ -56,9 +57,4 @@ func fillText(sd Device, x int, y int, text TextButton) error {
 	}
 
 	return sd.FillImage(x, y, img)
-}
-
-// FillText .
-func (sd *V2) FillText(x int, y int, text TextButton) error {
-	return fillText(sd, x, y, text)
 }

@@ -14,7 +14,7 @@ import (
 
 // Animation .
 type Animation struct {
-	sd     Device
+	sd     *StreamDeck
 	frames []AnimationFrame
 }
 
@@ -25,7 +25,7 @@ type AnimationFrame struct {
 }
 
 // NewAnimationFromGIF .
-func NewAnimationFromGIF(sd Device, filename string) (*Animation, error) {
+func (sd *StreamDeck) NewAnimationFromGIF(filename string) (*Animation, error) {
 	r, err := os.Open(filename)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to open gif")

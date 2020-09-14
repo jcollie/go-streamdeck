@@ -51,7 +51,7 @@ func getSvgIcon(icon string) (*oksvg.SvgIcon, error) {
 	return svg, nil
 }
 
-func getIcon(sd Device, icon string, fgcolor color.Color, bgcolor color.Color) (image.Image, error) {
+func getIcon(sd *StreamDeck, icon string, fgcolor color.Color, bgcolor color.Color) (image.Image, error) {
 	var svg *oksvg.SvgIcon
 
 	svg, err := getSvgIcon(icon)

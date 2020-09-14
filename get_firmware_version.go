@@ -5,7 +5,7 @@ import (
 )
 
 // GetFirmwareVersion .
-func (sd *V2) GetFirmwareVersion() (string, error) {
+func (sd *StreamDeck) GetFirmwareVersion() (string, error) {
 	data := make([]byte, 32)
 	data[0] = 0x05
 	_, err := sd.device.GetFeatureReport(data)

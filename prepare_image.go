@@ -6,7 +6,7 @@ import (
 	"github.com/disintegration/imaging"
 )
 
-func prepareImage(sd Device, img image.Image) image.Image {
+func prepareImage(sd *StreamDeck, img image.Image) image.Image {
 	// first resize image height, preserving aspect rato
 	rect := img.Bounds()
 	if rect.Dy() != sd.ImageHeight() {

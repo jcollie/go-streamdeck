@@ -20,15 +20,15 @@ func enumerateStreamDecks() []hid.DeviceInfo {
 	return streamDeckDeviceInfos
 }
 
-func initializeStreamDeck(deviceInfo hid.DeviceInfo) (Device, error) {
+func initializeStreamDeck(deviceInfo hid.DeviceInfo) (*StreamDeck, error) {
 	device, err := deviceInfo.Open()
 	if err != nil {
 		return nil, errors.Wrapf(err, "Unable to open Stream Deck %s", deviceInfo.Serial)
 	}
 
 	switch device.ProductID {
-	case OriginalV2ProductID, XLProductID:
-		sd := new(V2)
+	case OriginalProductID, MiniProductID, OriginalV2ProductID, XLProductID:
+		sd := new(StreamDeck)
 		sd.device = device
 		sd.previousState = make([]ButtonState, sd.NumberOfButtons())
 		sd.buttonCallbacks = make([]ButtonCallback, sd.NumberOfButtons())
@@ -39,7 +39,7 @@ func initializeStreamDeck(deviceInfo hid.DeviceInfo) (Device, error) {
 }
 
 // New .
-func New() (Device, error) {
+func New() (*StreamDeck, error) {
 	deviceInfos := enumerateStreamDecks()
 
 	if len(deviceInfos) == 0 {
@@ -50,7 +50,7 @@ func New() (Device, error) {
 }
 
 // NewWithSerial .
-func NewWithSerial(serial string) (Device, error) {
+func NewWithSerial(serial string) (*StreamDeck, error) {
 	deviceInfos := enumerateStreamDecks()
 
 	if len(deviceInfos) == 0 {

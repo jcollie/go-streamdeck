@@ -28,14 +28,14 @@ func checkRGB(value int) error {
 }
 
 // checkValidButtonIndex checks that the button index is valid
-func checkValidButtonIndex(sd Device, buttonIndex int) error {
+func checkValidButtonIndex(sd *StreamDeck, buttonIndex int) error {
 	if buttonIndex < 0 || buttonIndex > sd.NumberOfButtons() {
 		return errors.Errorf("invalid key index")
 	}
 	return nil
 }
 
-func checkValidButtonXY(sd Device, x int, y int) error {
+func checkValidButtonXY(sd *StreamDeck, x int, y int) error {
 	if x < 0 || x >= sd.NumberOfColumns() {
 		return errors.Errorf("invalid x coordinate")
 	}
@@ -45,7 +45,7 @@ func checkValidButtonXY(sd Device, x int, y int) error {
 	return nil
 }
 
-func convertButtonIndexToXY(sd Device, buttonIndex int) (int, int, error) {
+func convertButtonIndexToXY(sd *StreamDeck, buttonIndex int) (int, int, error) {
 	err := checkValidButtonIndex(sd, buttonIndex)
 	if err != nil {
 		return 0, 0, errors.Wrap(err, "can't convert to XY")
@@ -55,7 +55,7 @@ func convertButtonIndexToXY(sd Device, buttonIndex int) (int, int, error) {
 	return x, y, nil
 }
 
-func convertXYToButtonIndex(sd Device, x int, y int) (int, error) {
+func convertXYToButtonIndex(sd *StreamDeck, x int, y int) (int, error) {
 	if err := checkValidButtonXY(sd, x, y); err != nil {
 		return 0, errors.Wrap(err, "can't convert X, Y to button index")
 	}
