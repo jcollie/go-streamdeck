@@ -24,13 +24,10 @@ func enumerateStreamDecks() []hid.DeviceInfo {
 }
 
 func isStreamDeck(deviceInfo hid.DeviceInfo) bool {
-	fmt.Printf("%04x %04x\n", deviceInfo.VendorID, deviceInfo.ProductID)
 	switch deviceInfo.VendorID {
-	case 0x0fd9:
-		fmt.Printf("Y\n")
+	case ElgatoVendorID:
 		switch deviceInfo.ProductID {
-		case 0x006d:
-			fmt.Printf("Z\n")
+		case OriginalV2ProductID:
 			return true
 		}
 	}
