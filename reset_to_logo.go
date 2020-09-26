@@ -1,11 +1,20 @@
 package streamdeck
 
 import (
+	"log"
+
 	"github.com/pkg/errors"
 )
 
 // ResetToLogo resets the keys to the detault logo.
 func (sd *StreamDeck) ResetToLogo() error {
+	sd.Lock()
+	log.Printf("locked by ResetToLogo")
+	defer func() {
+		log.Printf("unlocked by ResetToLogo")
+		sd.Unlock()
+	}()
+
 	switch sd.device.ProductID {
 	case OriginalProductID:
 		payload := make([]byte, 17)

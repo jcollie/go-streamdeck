@@ -1,9 +1,20 @@
 package streamdeck
 
-import "github.com/pkg/errors"
+import (
+	"log"
+
+	"github.com/pkg/errors"
+)
 
 // ResetKeyStream .
 func (sd *StreamDeck) ResetKeyStream() error {
+	sd.Lock()
+	log.Printf("locked by ResetKeyStream")
+	defer func() {
+		log.Printf("unlocked by ResetKeyStream")
+		sd.Unlock()
+	}()
+
 	switch sd.device.ProductID {
 	case OriginalProductID, OriginalV2ProductID:
 		payload := make([]byte, sd.ImageReportPayloadLength())
