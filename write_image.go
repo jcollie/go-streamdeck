@@ -75,6 +75,7 @@ func (sd *StreamDeck) writeImageDataV1(buttonIndex int, data []byte) error {
 func (sd *StreamDeck) writeImageDataV2(buttonIndex int, data []byte) error {
 	var pageNumber int = 0
 
+	log.Printf("locking by writeImageDataV2")
 	sd.Lock()
 	log.Printf("locked by writeImageDataV2")
 	defer func() {
