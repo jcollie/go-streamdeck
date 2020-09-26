@@ -102,6 +102,7 @@ func (sd *StreamDeck) writeImageDataV2(buttonIndex int, data []byte) error {
 		payload = append(payload, padding...)
 		_, err := sd.device.Write(payload)
 		if err != nil {
+			log.Printf("unable to send page %d: %+v", pageNumber, err)
 			return errors.Wrapf(err, "unable to send page: %d", pageNumber)
 		}
 		pageNumber++
