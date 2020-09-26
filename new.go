@@ -2,13 +2,17 @@ package streamdeck
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/karalabe/hid"
 	"github.com/pkg/errors"
 )
 
 func enumerateStreamDecks() []hid.DeviceInfo {
-	fmt.Printf("X %+v\n", hid.Supported())
+	if !hid.Supported() {
+		log.Panicf("USB HID is not supported in this build!")
+	}
+
 	allDeviceInfos := hid.Enumerate(0, 0)
 	fmt.Println(len(allDeviceInfos))
 	streamDeckDeviceInfos := []hid.DeviceInfo{}
@@ -27,6 +31,15 @@ func isStreamDeck(deviceInfo hid.DeviceInfo) bool {
 	switch deviceInfo.VendorID {
 	case ElgatoVendorID:
 		switch deviceInfo.ProductID {
+		case OriginalProductID:
+			return true
+
+		case MiniProductID:
+			return true
+
+		case XLProductID:
+			return true
+
 		case OriginalV2ProductID:
 			return true
 		}
@@ -57,7 +70,7 @@ func New() (*StreamDeck, error) {
 	deviceInfos := enumerateStreamDecks()
 
 	if len(deviceInfos) == 0 {
-		return nil, errors.Errorf("No Stream Decks found")
+		return nil, errors.Errorf("No Stream Decks found!")
 	}
 
 	return initializeStreamDeck(deviceInfos[0])
@@ -68,7 +81,7 @@ func NewWithSerial(serial string) (*StreamDeck, error) {
 	deviceInfos := enumerateStreamDecks()
 
 	if len(deviceInfos) == 0 {
-		return nil, errors.Errorf("no StreamDecks found")
+		return nil, errors.Errorf("No Stream Decks found!")
 	}
 
 	for _, deviceInfo := range deviceInfos {

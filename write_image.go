@@ -76,7 +76,11 @@ func (sd *StreamDeck) writeImageDataV2(buttonIndex int, data []byte) error {
 	var pageNumber int = 0
 
 	sd.Lock()
-	defer sd.Unlock()
+	log.Printf("locked")
+	defer func() {
+		log.Printf("unlocking")
+		sd.Unlock()
+	}()
 	startTime := time.Now()
 
 	for len(data) > 0 {
