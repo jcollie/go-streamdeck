@@ -1,4 +1,4 @@
-module github.com/jcollie/streamdeck
+module github.com/jcollie/go-streamdeck
 
 go 1.15
 
@@ -9,6 +9,6 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/srwiley/oksvg v0.0.0-20200311192757-870daf9aa564
 	github.com/srwiley/rasterx v0.0.0-20200120212402-85cb7272f5e9
-	golang.org/x/image v0.0.0-20200801110659-972c09e46d76
-	golang.org/x/net v0.0.0-20200904194848-62affa334b73 // indirect
+	golang.org/x/image v0.0.0-20200926103441-2fd4ef34c9a9
+	golang.org/x/net v0.0.0-20200925080053-05aa5d4ee321 // indirect
 )
