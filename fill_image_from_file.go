@@ -15,7 +15,7 @@ import (
 
 // FillImageFromFile fills the button with an image from a file.
 func (sd *StreamDeck) FillImageFromFile(x int, y int, path string) error {
-	if err := checkValidButtonXY(sd, x, y); err != nil {
+	if err := sd.checkValidButtonXY(x, y); err != nil {
 		return errors.Wrap(err, "unable to fill image")
 	}
 	reader, err := os.Open(path)

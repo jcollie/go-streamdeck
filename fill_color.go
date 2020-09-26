@@ -8,7 +8,7 @@ import (
 
 // FillColor fills the button with a solid color.
 func (sd *StreamDeck) FillColor(x int, y int, fgcolor color.Color) error {
-	if err := checkValidButtonXY(sd, x, y); err != nil {
+	if err := sd.checkValidButtonXY(x, y); err != nil {
 		return err
 	}
 

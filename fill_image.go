@@ -10,7 +10,7 @@ import (
 // the image in the native size. Otherwise it will be automatically
 // resized.
 func (sd *StreamDeck) FillImage(x int, y int, img image.Image) error {
-	if err := checkValidButtonXY(sd, x, y); err != nil {
+	if err := sd.checkValidButtonXY(x, y); err != nil {
 		return err
 	}
 

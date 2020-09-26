@@ -8,16 +8,33 @@ import (
 )
 
 func enumerateStreamDecks() []hid.DeviceInfo {
-	allDeviceInfos := hid.Enumerate(VendorID, 0)
+	fmt.Printf("X %+v\n", hid.Supported())
+	allDeviceInfos := hid.Enumerate(0, 0)
+	fmt.Println(len(allDeviceInfos))
 	streamDeckDeviceInfos := []hid.DeviceInfo{}
 
 	for _, deviceInfo := range allDeviceInfos {
-		if streamDeckInfo, ok := ProductIDs[deviceInfo.ProductID]; ok {
+		fmt.Printf("%04x %04x\n", deviceInfo.VendorID, deviceInfo.ProductID)
+		if isStreamDeck(deviceInfo) {
 			streamDeckDeviceInfos = append(streamDeckDeviceInfos, deviceInfo)
-			fmt.Printf("Detected %s with serial number %s\n", streamDeckInfo.Description, deviceInfo.Serial)
+			// fmt.Printf("Detected %s with serial number %s\n", streamDeckInfo.Description, deviceInfo.Serial)
 		}
 	}
 	return streamDeckDeviceInfos
+}
+
+func isStreamDeck(deviceInfo hid.DeviceInfo) bool {
+	fmt.Printf("%04x %04x\n", deviceInfo.VendorID, deviceInfo.ProductID)
+	switch deviceInfo.VendorID {
+	case 0x0fd9:
+		fmt.Printf("Y\n")
+		switch deviceInfo.ProductID {
+		case 0x006d:
+			fmt.Printf("Z\n")
+			return true
+		}
+	}
+	return false
 }
 
 func initializeStreamDeck(deviceInfo hid.DeviceInfo) (*StreamDeck, error) {

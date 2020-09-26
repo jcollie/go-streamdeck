@@ -2,7 +2,7 @@ package streamdeck
 
 // SetCallback .
 func (sd *StreamDeck) SetCallback(x int, y int, callback ButtonCallback) error {
-	buttonIndex, err := convertXYToButtonIndex(sd, x, y)
+	buttonIndex, err := sd.convertXYToButtonIndex(x, y)
 	if err != nil {
 		return err
 	}

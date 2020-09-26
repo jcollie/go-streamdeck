@@ -66,7 +66,7 @@ func (sd *StreamDeck) NewAnimationFromGIF(filename string) (*Animation, error) {
 
 // RunAnimation .
 func (animation *Animation) RunAnimation(ctx context.Context, x int, y int) {
-	buttonIndex, err := convertXYToButtonIndex(animation.sd, x, y)
+	buttonIndex, err := animation.sd.convertXYToButtonIndex(x, y)
 	if err != nil {
 		fmt.Printf("unable to convert x y: %+v\n", err)
 		return

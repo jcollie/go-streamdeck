@@ -13,13 +13,33 @@ func itob(i byte) ButtonState {
 	return ButtonPressed
 }
 
+// Read .
 func (sd *StreamDeck) Read() {
+	switch sd.device.ProductID {
+	case OriginalV2ProductID:
+		sd.readV2()
+	}
+}
+
+func (sd *StreamDeck) readV1() {
+	for {
+		data := make([]byte, 1+sd.NumberOfButtons())
+		_, err := sd.device.Read(data)
+		timestamp := time.Now()
+		if err != nil {
+			fmt.Printf("unable to read: %v", err)
+		}
+
+		sd.dispatchButtons(timestamp, data[1:])
+	}
+}
+func (sd *StreamDeck) readV2() {
 	for {
 		data := make([]byte, 4+sd.NumberOfButtons())
 		_, err := sd.device.Read(data)
 		timestamp := time.Now()
 		if err != nil {
-			fmt.Printf("unable to read: %s", err.Error())
+			fmt.Printf("unable to read: %v", err.Error())
 			continue
 		}
 
@@ -31,27 +51,31 @@ func (sd *StreamDeck) Read() {
 			continue
 		}
 
-		func() {
-			sd.Lock()
-			defer sd.Unlock()
-
-			for buttonIndex, rawButtonState := range data[4:] {
-				x, y, err := convertButtonIndexToXY(sd, buttonIndex)
-				if err != nil {
-					fmt.Printf("err: %+v\n", err)
-				}
-				buttonState := itob(rawButtonState)
-				if sd.buttonCallbacks[buttonIndex] != nil {
-					if sd.previousState[buttonIndex] != buttonState {
-						if buttonState == ButtonPressed {
-							go sd.buttonCallbacks[buttonIndex].ButtonPressed(sd, x, y, timestamp)
-						} else {
-							go sd.buttonCallbacks[buttonIndex].ButtonReleased(sd, x, y, timestamp)
-						}
-					}
-				}
-				sd.previousState[buttonIndex] = buttonState
-			}
-		}()
+		sd.dispatchButtons(timestamp, data[4:])
 	}
+}
+
+func (sd *StreamDeck) dispatchButtons(timestamp time.Time, data []byte) {
+
+	sd.Lock()
+	defer sd.Unlock()
+
+	for buttonIndex, rawButtonState := range data {
+		x, y, err := sd.convertButtonIndexToXY(buttonIndex)
+		if err != nil {
+			fmt.Printf("err: %+v\n", err)
+		}
+		buttonState := itob(rawButtonState)
+		if sd.buttonCallbacks[buttonIndex] != nil {
+			if sd.previousState[buttonIndex] != buttonState {
+				if buttonState == ButtonPressed {
+					go sd.buttonCallbacks[buttonIndex].ButtonPressed(sd, x, y, timestamp)
+				} else {
+					go sd.buttonCallbacks[buttonIndex].ButtonReleased(sd, x, y, timestamp)
+				}
+			}
+		}
+		sd.previousState[buttonIndex] = buttonState
+	}
+
 }
