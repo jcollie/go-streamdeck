@@ -3,6 +3,7 @@ package streamdeck
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/karalabe/hid"
 	"github.com/pkg/errors"
@@ -48,9 +49,40 @@ func isStreamDeck(deviceInfo hid.DeviceInfo) bool {
 }
 
 func initializeStreamDeck(deviceInfo hid.DeviceInfo) (*StreamDeck, error) {
-	device, err := deviceInfo.Open()
-	if err != nil {
-		return nil, errors.Wrapf(err, "Unable to open Stream Deck %s", deviceInfo.Serial)
+
+	var device *hid.Device
+
+	type result struct {
+		device *hid.Device
+		err    error
+	}
+
+	done := make(chan result)
+
+	go func(done chan<- result) {
+		start := time.Now()
+		log.Printf("attempting to open device %s", deviceInfo.Path)
+		device, err := deviceInfo.Open()
+		end := time.Now()
+		log.Printf("took %s to open device", end.Sub(start))
+		if err != nil {
+			done <- result{nil, errors.Wrapf(err, "unable to open Stream Deck %s", deviceInfo.Serial)}
+			close(done)
+			return
+		}
+		done <- result{device, nil}
+		close(done)
+	}(done)
+
+	select {
+	case <-time.After(30 * time.Second):
+		return nil, errors.Errorf("unable to open device after 30 seconds")
+
+	case r := <-done:
+		if r.err != nil {
+			return nil, r.err
+		}
+		device = r.device
 	}
 
 	switch device.ProductID {
@@ -60,6 +92,7 @@ func initializeStreamDeck(deviceInfo hid.DeviceInfo) (*StreamDeck, error) {
 		sd.previousState = make([]ButtonState, sd.NumberOfButtons())
 		sd.buttonCallbacks = make([]ButtonCallback, sd.NumberOfButtons())
 		return sd, nil
+
 	default:
 		return nil, errors.Errorf("not implemented for product id %x", device.ProductID)
 	}
